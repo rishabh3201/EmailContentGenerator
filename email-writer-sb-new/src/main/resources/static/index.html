@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffffdd;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #444;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #0077ff;
+      box-shadow: 0 0 0 2px #0077ff33;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #0077ff;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005fcc;
+    }
+
+    #output {
+      margin-top: 1.5rem;
+      background-color: #f9f9f9;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px dashed #ccc;
+      color: #333;
+      white-space: pre-wrap;
+    }
+  </style>
+  <script>
+    async function generateEmail() {
+      const emailContent = document.getElementById("emailContent").value;
+      const tone = document.getElementById("tone").value;
+
+      const requestData = { emailContent, tone };
+
+      const response = await fetch("/api/email/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      });
+
+      const result = await response.text();
+      document.getElementById("output").innerText = result;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>📧 Smart Email Generator</h2>
+
+    <label for="emailContent">Email Content</label>
+    <input type="text" id="emailContent" placeholder="Enter email content">
+
+    <label for="tone">Tone</label>
+    <input type="text" id="tone" placeholder="Enter tone (e.g., formal, casual)">
+
+    <button onclick="generateEmail()">✨ Generate Email</button>
+
+    <div id="output"></div>
+  </div>
+</body>
+</html>
